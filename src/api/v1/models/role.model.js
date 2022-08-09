@@ -8,10 +8,13 @@ const RoleSchema = new Schema(
       trim: true,
       required: true,
       lowercase: true,
-      trim: true,
       unique: true,
     },
-    permissions: [mongoose.Types.ObjectId],
+    description: {
+      type: String,
+      trim: true,
+    },
+    permissions: [{ type: mongoose.Types.ObjectId, ref: "permission" }],
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }

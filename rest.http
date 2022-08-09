@@ -35,3 +35,17 @@ content-type: application/json
 ### Me (Profile)
 GET http://localhost:3003/api/user/me 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTk3MzEwNDgsImV4cCI6MTY1OTgxNzQ0OCwiYXVkIjoiNjJlZDU5ZTg4N2UyY2YzMDhjZjYwYzlhIiwiaXNzIjoibW92ZWlzYm94LmlvIn0.WhPs74I_QAKeqkv2w5aHjc7Y7Qr5pNgVBjNx4nnGTMU
+
+### Moderator
+### Test Permission
+GET http://localhost:3003/api/moderator/test-permission
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjAwNTQ1NjgsImV4cCI6MTY2MDE0MDk2OCwiYXVkIjoiNjJmMjY3MDlhZjU2NTk5ZjM5ODhkNDc5IiwiaXNzIjoibW92ZWlzYm94LmlvIn0.heL6JpGbJpYPo7hZX4D8msHHKsF727a92fSe16J-Qes
+
+### Moderator Login
+POST http://localhost:3003/api/moderator/login
+content-type: application/json
+
+{
+    "email": "imanw77@gmail.com",
+    "password": "Iman@1234"
+}

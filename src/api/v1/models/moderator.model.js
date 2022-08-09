@@ -2,7 +2,7 @@ const argon2 = require("argon2");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ManagerSchema = new Schema(
+const ModeratorSchema = new Schema(
   {
     email: {
       type: String,
@@ -11,13 +11,17 @@ const ManagerSchema = new Schema(
       lowercase: true,
       unique: true,
     },
+    role: {
+      type: Schema.Types.ObjectId,
+      ref: "role",
+    },
     password: { type: String, required: true, select: false },
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
 );
 
-ManagerSchema.pre("save", async function (next) {
+ModeratorSchema.pre("save", async function (next) {
   try {
     if (!this.isModified("password")) {
       return next();
@@ -31,7 +35,7 @@ ManagerSchema.pre("save", async function (next) {
   }
 });
 
-ManagerSchema.methods.isPasswordValid = async function (password) {
+ModeratorSchema.methods.isPasswordValid = async function (password) {
   try {
     return await argon2.verify(this.password, password);
   } catch (err) {
@@ -39,4 +43,4 @@ ManagerSchema.methods.isPasswordValid = async function (password) {
   }
 };
 
-module.exports = mongoose.model("manager", ManagerSchema);
+module.exports = mongoose.model("moderator", ModeratorSchema);

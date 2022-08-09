@@ -1,5 +1,5 @@
 const createError = require("http-errors");
-const { User } = require("../models");
+const { User, Moderator, Manager } = require("../models");
 const { generalResponse, messages } = require("../utils");
 const { jwt } = require("../utils");
 const redisClient = require("../helpers/redis").client;
@@ -45,6 +45,64 @@ exports.login = async (req, res, next) => {
 
     const accessToken = await jwt.signAccessToken(user);
     const refreshToken = await jwt.signRefreshToken(user);
+
+    return generalResponse(
+      res,
+      202,
+      { accessToken, refreshToken },
+      messages.LOGIN_SUCCESS
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.managerLogin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const manager = await Manager.findOne({ email }, "password email id");
+
+    if (!manager) {
+      throw createError.Unauthorized(messages.EMAIL_OR_PASSWORD_INCORRECT);
+    }
+
+    const isMatch = await manager.isPasswordValid(password);
+    if (!isMatch) {
+      throw createError.Unauthorized(messages.EMAIL_OR_PASSWORD_INCORRECT);
+    }
+
+    const accessToken = await jwt.signAccessToken(manager);
+    const refreshToken = await jwt.signRefreshToken(manager);
+
+    return generalResponse(
+      res,
+      202,
+      { accessToken, refreshToken },
+      messages.LOGIN_SUCCESS
+    );
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.moderatorLogin = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const moderator = await Moderator.findOne({ email }, "password email id");
+
+    if (!moderator) {
+      throw createError.Unauthorized(messages.EMAIL_OR_PASSWORD_INCORRECT);
+    }
+
+    const isMatch = await moderator.isPasswordValid(password);
+    if (!isMatch) {
+      throw createError.Unauthorized(messages.EMAIL_OR_PASSWORD_INCORRECT);
+    }
+
+    const accessToken = await jwt.signAccessToken(moderator);
+    const refreshToken = await jwt.signRefreshToken(moderator);
 
     return generalResponse(
       res,

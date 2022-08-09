@@ -9,7 +9,7 @@ const { morgan } = require("./../middlewares");
 const connectToMongoDB = require("./mongodb");
 const connectToRedis = require("./redis").init;
 
-const openapiDocs = require("./../../openapi.json");
+const openapiDocs = require("./../../../openapi.json");
 
 module.exports = async (app) => {
   logger.warn("♻ Initializing Requirements.");

@@ -5,5 +5,6 @@ exports.REGISTER_SUCCESS = "You successfuly registered";
 exports.LOGIN_SUCCESS = "You successfuly loggined";
 exports.EMAIL_OR_PASSWORD_INCORRECT = "Email or password is incorrect";
 exports.NOT_AUTHENTICATED = "You are not authenticated.";
+exports.PERMISSIN_DENIED = "You have not permission to access this resource.";
 exports.TOKEN_GENERATED = "New Access Token Generated.";
 exports.SUCCESS = "Success.";
