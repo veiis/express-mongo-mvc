@@ -1,0 +1,199 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Express-Mongo-MVC",
+    "description": "API Documentation",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "Iman Veisi (veiis)",
+      "email": "imanw77@gmail.com"
+    }
+  },
+  "server": {
+    "url": "http://localhost:3003/v1"
+  },
+  "components": {
+    "schemas": {
+      "Register": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Iman"
+          },
+          "email": {
+            "type": "string",
+            "example": "imanw77@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "Iman@1234"
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "imanw77@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "Iman@1234"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "pageParam": {
+        "name": "page",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": false
+      },
+      "limitParam": {
+        "name": "limit",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": true
+      },
+      "sortParam": {
+        "name": "sort",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": true
+      },
+      "orderParam": {
+        "name": "order",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": true
+      },
+      "searchParam": {
+        "name": "search",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": true
+      },
+      "idParam": {
+        "name": "id",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": false
+      },
+      "userIdParam": {
+        "name": "userId",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "allowEmptyValue": true
+      }
+    },
+    "responses": {
+      "Success": {
+        "description": "Success ✅"
+      },
+      "Failure": {
+        "description": "Failure ⛔"
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "name": "api_key",
+        "in": "header",
+        "type": "apiKey"
+      },
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Public",
+      "description": "General API for users (un-protected)"
+    },
+    {
+      "name": "User",
+      "description": "API for users (protected)"
+    },
+    {
+      "name": "Manager",
+      "description": "API for Manager (protected)"
+    }
+  ],
+  "paths": {
+    "/api/register": {
+      "post": {
+        "tags": ["API"],
+        "summary": "Register",
+        "oprationdId": "register",
+        "requestBody": {
+          "description": "Register Information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/Failure"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": ["API"],
+        "summary": "Login",
+        "oprationdId": "login",
+        "requestBody": {
+          "description": "Login Information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Success"
+          },
+          "400": {
+            "$ref": "#/components/responses/Failure"
+          }
+        }
+      }
+    }
+  }
+}

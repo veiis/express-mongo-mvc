@@ -1,0 +1,37 @@
+### Login
+POST http://localhost:3003/api/user/login
+content-type: application/json
+
+{
+    "email": "imanw77@gmail.com",
+    "password": "Iman@1234"
+}
+
+### Register
+POST http://localhost:3003/api/user/register 
+content-type: application/json
+
+{
+    "email": "imanw77@gmail.com",
+    "password": "Iman@1234"
+}
+
+### Refresh Token
+POST http://localhost:3003/api/user/refresh-token 
+content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTk3MzEwMzQsImV4cCI6MTY5MTI4ODYzNCwiYXVkIjoiNjJlZDU5ZTg4N2UyY2YzMDhjZjYwYzlhIiwiaXNzIjoibW92ZWlzYm94LmlvIn0.KeLt4ppW4aCdTNfGCPDib8zZ7XYdLWwConKr-7aGn3c"
+}
+
+### Logout
+DELETE http://localhost:3003/api/user/logout
+content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTk3ODg0NzAsImV4cCI6MTY5MTM0NjA3MCwiYXVkIjoiNjJlZDU5ZTg4N2UyY2YzMDhjZjYwYzlhIiwiaXNzIjoibW92ZWlzYm94LmlvIn0.IvpvzOy6YRX3SQAChy_EAfivsISoZmGgz0p-yb4_q9E"
+}
+
+### Me (Profile)
+GET http://localhost:3003/api/user/me 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTk3MzEwNDgsImV4cCI6MTY1OTgxNzQ0OCwiYXVkIjoiNjJlZDU5ZTg4N2UyY2YzMDhjZjYwYzlhIiwiaXNzIjoibW92ZWlzYm94LmlvIn0.WhPs74I_QAKeqkv2w5aHjc7Y7Qr5pNgVBjNx4nnGTMU
