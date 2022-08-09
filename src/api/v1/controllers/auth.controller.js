@@ -93,7 +93,7 @@ exports.me = async (req, res, next) => {
     const { id } = req.user;
     const user = await User.findById(id).lean();
 
-    return generalResponse(res, 201, { user }, messages.REGISTER_SUCCESS);
+    return generalResponse(res, 201, { user }, messages.SUCCESS);
   } catch (err) {
     next(err);
   }

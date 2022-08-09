@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { logger, isDevelopment, isDev } = require("../utils");
+const { logger, isDev } = require("../utils");
 
 const { MONGO_SERVER, MONGO_DATABASE_NAME, MONGO_USER, MONGO_PASS } =
   process.env;

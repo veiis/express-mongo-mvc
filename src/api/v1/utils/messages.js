@@ -6,3 +6,4 @@ exports.LOGIN_SUCCESS = "You successfuly loggined";
 exports.EMAIL_OR_PASSWORD_INCORRECT = "Email or password is incorrect";
 exports.NOT_AUTHENTICATED = "You are not authenticated.";
 exports.TOKEN_GENERATED = "New Access Token Generated.";
+exports.SUCCESS = "Success.";

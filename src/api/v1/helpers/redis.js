@@ -36,7 +36,7 @@ client.on("error", () => {
 });
 
 client.on("end", () => {
-  logger.info("❌ MongoDB Disconnected");
+  logger.info("❌ Redis Disconnected");
 });
 
 // Events on CTRL+C (exit)
