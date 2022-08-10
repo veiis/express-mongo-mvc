@@ -8,3 +8,13 @@ exports.NOT_AUTHENTICATED = "You are not authenticated.";
 exports.PERMISSIN_DENIED = "You have not permission to access this resource.";
 exports.TOKEN_GENERATED = "New Access Token Generated.";
 exports.SUCCESS = "Success.";
+
+// Crud Messages (General)
+
+exports.CREATE_SUCCESS = "Created successfuly.";
+exports.UPDATE_SUCCESS = "Updated successfuly.";
+exports.DELETE_SUCCESS = "Deleted successfuly.";
+exports.READ_SUCCESS = "Data found successfuly.";
+
+exports.DUPLICATE_DATA = "Item already exists.";
+exports.NOT_FOUND_DATA = "Item not found.";

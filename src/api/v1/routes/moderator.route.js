@@ -7,6 +7,7 @@ const {
   hasAccess,
 } = require("../middlewares/auth.middleware");
 const { validator } = require("../middlewares");
+const { accessKeys } = require("../utils/constants");
 const router = express.Router();
 
 router.post(
@@ -14,12 +15,15 @@ router.post(
   validator(authValidator.moderatorLogin),
   authController.moderatorLogin
 );
+
 router.use(moderatorAuth);
 router.use(isModerator);
 
 // Moderator
-router.get("/test-permission", hasAccess("post", "write"), (req, res, next) =>
-  res.json({ success: "true" })
+router.get(
+  "/test-permission",
+  hasAccess("post", accessKeys.write),
+  (req, res, next) => res.json({ success: "true" })
 );
 
 module.exports = router;

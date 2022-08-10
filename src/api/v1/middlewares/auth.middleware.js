@@ -34,12 +34,14 @@ exports.managerAuth = async (req, res, next) => {
     if (!token) return next(createError.Forbidden(messages.NOT_AUTHENTICATED));
 
     const decoded = await verify(token, ACCESS_TOKEN_SECRET);
-    const manager = await Manager.findById(decoded.aud).select("_id email");
+    const manager = await Manager.findById(decoded.aud)
+      .select("_id email role")
+      .populate("role", "name");
 
     if (!manager)
       return next(createError.Forbidden(messages.NOT_AUTHENTICATED));
 
-    req.user = { id: manager.id, email: manager.email };
+    req.user = { id, email, role } = manager;
     next();
   } catch (err) {
     next(err);
@@ -108,8 +110,9 @@ exports.isModerator = (req, res, next) => {
 // Role Checker [manager]
 exports.isManager = async (req, res, next) => {
   try {
-    const role = req.user.role;
-    if (role.name === "manager") return next();
+    const { email, role } = req.user;
+    if (role.name === "manager" && email === process.env.MANAGER_EMAIL)
+      return next();
     return next(createError.Forbidden(messages.PERMISSIN_DENIED));
   } catch (err) {
     next(err);

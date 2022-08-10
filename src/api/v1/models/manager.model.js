@@ -12,6 +12,10 @@ const ManagerSchema = new Schema(
       unique: true,
     },
     password: { type: String, required: true, select: false },
+    role: {
+      type: Schema.Types.ObjectId,
+      ref: "role",
+    },
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
