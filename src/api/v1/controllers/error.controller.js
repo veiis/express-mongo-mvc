@@ -10,6 +10,7 @@ exports.handle404 = async (req, next) => {
 };
 
 exports.handleError = async (err, res) => {
+  logger.error(err);
   const keys = Object.keys(err);
   const error = {
     status: err.status || 500,
