@@ -1,5 +1,8 @@
 const createError = require("http-errors");
+const multer = require("multer");
 const { isDev, messages, logger } = require("../utils");
+
+const whiteList = ["status", "message", "error", "fields"];
 
 exports.handle404 = async (req, next) => {
   return next(
@@ -16,8 +19,13 @@ exports.handleError = async (err, res) => {
     message: isDev() ? err.message : messages.INTERNAL_SERVER_ERROR,
   };
 
+  if (err instanceof multer.MulterError) {
+    error.status = 413;
+    error.message = err.message;
+  }
+
   for (key of keys) {
-    error[key] = err[key];
+    if (whiteList.includes(key)) error[key] = err[key];
   }
 
   if (error.status === 500) logger.error(`${error.status} ${err.message}`);
