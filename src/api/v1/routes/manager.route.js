@@ -1,7 +1,15 @@
 const express = require("express");
 const { validator } = require("../middlewares");
-const { authController, permissionController } = require("../controllers");
-const { authValidator, permissionValidator } = require("../validators");
+const {
+  authController,
+  permissionController,
+  roleController,
+} = require("../controllers");
+const {
+  authValidator,
+  permissionValidator,
+  roleValidator,
+} = require("../validators");
 const { isManager, managerAuth } = require("../middlewares/auth.middleware");
 const router = express.Router();
 
@@ -25,5 +33,17 @@ router
   .route("/permissions/:id")
   .get(validator(permissionValidator.getOne), permissionController.getOne)
   .delete(validator(permissionValidator.delete), permissionController.delete);
+
+// Role
+router
+  .route("/roles")
+  .post(validator(roleValidator.create), roleController.create)
+  .put(validator(roleValidator.edit), roleController.edit)
+  .get(validator(roleValidator.getAll), roleController.getAll);
+
+router
+  .route("/roles/:id")
+  .get(validator(roleValidator.getOne), roleController.getOne)
+  .delete(validator(roleValidator.delete), roleController.delete);
 
 module.exports = router;

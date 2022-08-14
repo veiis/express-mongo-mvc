@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const { resources } = require("../utils/constants");
+
 const PermissionSchema = new Schema(
   {
     name: {
@@ -9,7 +11,12 @@ const PermissionSchema = new Schema(
       required: true,
       unique: true,
     },
-    resource: { type: String, lowercase: true, trim: true },
+    resource: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      enum: Object.values(resources),
+    },
     w: { type: Boolean, default: false },
     r: { type: Boolean, default: false },
     e: { type: Boolean, default: false },
