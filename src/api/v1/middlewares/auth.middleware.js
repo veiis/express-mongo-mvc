@@ -36,46 +36,16 @@ exports.managerAuth = async (req, res, next) => {
     const decoded = await verify(token, ACCESS_TOKEN_SECRET);
     const manager = await Manager.findById(decoded.aud)
       .select("_id email role")
-      .populate("role", "name");
+      .populate({
+        path: "role",
+        select: " name permissions",
+        populate: { path: "permissions", select: "resource type name" },
+      });
 
     if (!manager)
       return next(createError.Forbidden(messages.NOT_AUTHENTICATED));
 
     req.user = { id, email, role } = manager;
-    next();
-  } catch (err) {
-    next(err);
-  }
-};
-
-// Check Moderator Token
-exports.moderatorAuth = async (req, res, next) => {
-  try {
-    const bearer = req.headers["authorization"];
-    const token = bearer && bearer.split(" ")[1];
-
-    if (!token) return next(createError.Forbidden(messages.NOT_AUTHENTICATED));
-
-    const decoded = await verify(token, ACCESS_TOKEN_SECRET);
-    const moderator = await Moderator.findById(decoded.aud)
-      .select("_id email role")
-      .populate({
-        path: "role",
-        select: "name permissions",
-        populate: {
-          path: "permissions",
-          select: "name resource write edit read delete",
-        },
-      });
-
-    if (!moderator)
-      return next(createError.Forbidden(messages.NOT_AUTHENTICATED));
-
-    req.user = {
-      id: moderator.id,
-      email: moderator.email,
-      role: moderator.role,
-    };
 
     next();
   } catch (err) {
@@ -86,8 +56,10 @@ exports.moderatorAuth = async (req, res, next) => {
 // Helper for verfiy token
 const verify = (token) =>
   new Promise((resolve, reject) => {
+    // Verifying JWT Token
     jwt.verify(token, ACCESS_TOKEN_SECRET, (err, payload) => {
       if (err) {
+        // If there was an error on verifying token reject with 401
         const message =
           err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
         return reject(createError.Unauthorized(message));
@@ -96,38 +68,19 @@ const verify = (token) =>
     });
   });
 
-// Role Checker [moderator, manager]
-exports.isModerator = (req, res, next) => {
-  try {
-    const role = req.user.role;
-    if (role.name === "moderator" || role.name === "manager") return next();
-    return next(createError.Forbidden(messages.PERMISSIN_DENIED));
-  } catch (err) {
-    next(err);
-  }
-};
-
-// Role Checker [manager]
-exports.isManager = async (req, res, next) => {
-  try {
-    const { email, role } = req.user;
-    if (role.name === "manager" && email === process.env.MANAGER_EMAIL)
-      return next();
-    return next(createError.Forbidden(messages.PERMISSIN_DENIED));
-  } catch (err) {
-    next(err);
-  }
-};
-
-// Permission Handler
+// Access Handler (check for permissions)
 exports.hasAccess = (resource, access) => async (req, res, next) => {
   try {
-    const role = req.user.role;
-    if (role.name.toLowerCase() === "manager") return next();
+    const { email, role } = req.user;
 
-    const permission = role.permissions.find(
-      (perm) => perm.resource === resource && perm[access]
-    );
+    // Check for superadmin (if it was superadmin call next [no need to check permissions])
+    if (email === process.env.SUPERADMIN_EMAIL || role.name === "superadmin")
+      return next();
+
+    // Check for permissions
+    const permission = role.permissions.find((perm) => {
+      return perm.resource === resource && perm.type === access;
+    });
 
     if (!permission)
       return next(createError.Forbidden(messages.PERMISSIN_DENIED));

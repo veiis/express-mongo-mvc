@@ -12,10 +12,7 @@ const ManagerSchema = new Schema(
       unique: true,
     },
     password: { type: String, required: true, select: false },
-    role: {
-      type: Schema.Types.ObjectId,
-      ref: "role",
-    },
+    role: { type: Schema.Types.ObjectId, ref: "role", default: null },
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }
@@ -38,6 +35,14 @@ ManagerSchema.pre("save", async function (next) {
 ManagerSchema.methods.isPasswordValid = async function (password) {
   try {
     return await argon2.verify(this.password, password);
+  } catch (err) {
+    throw err;
+  }
+};
+
+ManagerSchema.methods.getPublicFields = async function () {
+  try {
+    return { id: this.id, email: this.email, role: this.role };
   } catch (err) {
     throw err;
   }

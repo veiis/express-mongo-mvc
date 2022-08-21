@@ -1,5 +1,6 @@
 const createError = require("http-errors");
 const jwt = require("jsonwebtoken");
+const { isDev } = require(".");
 
 const redisClient = require("./../helpers/redis").client;
 
@@ -10,7 +11,7 @@ exports.signAccessToken = (user) => {
   return new Promise((resolve, reject) => {
     const payload = {};
     const options = {
-      expiresIn: "1d", // Should be 1h or 15m
+      expiresIn: isDev() ? "6d" : "1d", // Should be 1h or 15m
       issuer: "moveisbox.io",
       audience: user.id,
     };

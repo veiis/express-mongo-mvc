@@ -87,7 +87,10 @@ exports.getOne = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const item = await Role.findOne({ _id: id, deletedAt: null });
+    const item = await Role.findOne({ _id: id, deletedAt: null }).populate(
+      "permissions",
+      "resource type"
+    );
 
     return generalResponse(res, 200, { item }, messages.READ_SUCCESS);
   } catch (err) {
@@ -121,6 +124,7 @@ exports.getAll = async (req, res, next) => {
 
     const total = await Role.countDocuments(query);
     const items = await Role.find(query)
+      .populate("permissions", "resource type")
       .select("-__v")
       .sort({ [sort]: order })
       .skip((page - 1) * limit)

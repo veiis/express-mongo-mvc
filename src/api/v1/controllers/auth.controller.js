@@ -8,7 +8,7 @@ exports.register = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const existUser = await User.findOne({ email }).lean();
+    const existUser = await User.findOne({ email, deletedAt: null }).lean();
     if (existUser)
       return next(createError.UnprocessableEntity(messages.DUPLICATE_USER));
 

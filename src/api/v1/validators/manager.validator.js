@@ -2,21 +2,29 @@ const Joi = require("joi");
 
 exports.create = {
   body: Joi.object({
-    name: Joi.string().required(),
-    description: Joi.string(),
-    permissions: Joi.array()
-      .min(1)
-      .items(Joi.string().hex().length(24))
+    email: Joi.string().email().lowercase().required(),
+    password: Joi.string()
+      .min(8)
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
+      .message(
+        "Password must include letters (lowercase and uppercase), numbers and symbols"
+      )
       .required(),
+    role: Joi.string().hex().length(24).required(),
   }),
 };
 
 exports.edit = {
   body: Joi.object({
     id: Joi.string().hex().length(24).required(),
-    name: Joi.string(),
-    description: Joi.string(),
-    permissions: Joi.array().items(Joi.string().hex().length(24)),
+    email: Joi.string().email().lowercase(),
+    password: Joi.string()
+      .min(8)
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
+      .message(
+        "Password must include letters (lowercase and uppercase), numbers and symbols"
+      ),
+    role: Joi.string().hex().length(24),
   }),
 };
 

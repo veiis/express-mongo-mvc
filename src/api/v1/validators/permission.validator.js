@@ -1,9 +1,12 @@
 const Joi = require("joi");
+const { RESOURCE } = require("./../data");
 
 exports.create = {
   body: Joi.object({
     name: Joi.string().required(),
-    resource: Joi.string().required(),
+    resource: Joi.string()
+      .valid(...Object.keys(RESOURCE))
+      .required(),
     w: Joi.boolean().default(false),
     e: Joi.boolean().default(false),
     r: Joi.boolean().default(false),
@@ -15,7 +18,9 @@ exports.edit = {
   body: Joi.object({
     id: Joi.string().hex().length(24).required(),
     name: Joi.string(),
-    resource: Joi.string(),
+    resource: Joi.string()
+      .valid(...Object.keys(RESOURCE))
+      .required(),
     w: Joi.boolean(),
     e: Joi.boolean(),
     r: Joi.boolean(),
