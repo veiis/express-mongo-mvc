@@ -86,35 +86,6 @@ exports.managerLogin = async (req, res, next) => {
   }
 };
 
-exports.moderatorLogin = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-
-    const moderator = await Moderator.findOne({ email }, "password email id");
-
-    if (!moderator) {
-      throw createError.Unauthorized(messages.EMAIL_OR_PASSWORD_INCORRECT);
-    }
-
-    const isMatch = await moderator.isPasswordValid(password);
-    if (!isMatch) {
-      throw createError.Unauthorized(messages.EMAIL_OR_PASSWORD_INCORRECT);
-    }
-
-    const accessToken = await jwt.signAccessToken(moderator);
-    const refreshToken = await jwt.signRefreshToken(moderator);
-
-    return generalResponse(
-      res,
-      202,
-      { accessToken, refreshToken },
-      messages.LOGIN_SUCCESS
-    );
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.refreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;

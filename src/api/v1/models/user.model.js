@@ -39,4 +39,12 @@ UserSchema.methods.isPasswordValid = async function (password) {
   }
 };
 
+UserSchema.methods.getPublicFields = async function () {
+  try {
+    return { id: this.id, email: this.email };
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = mongoose.model("user", UserSchema);

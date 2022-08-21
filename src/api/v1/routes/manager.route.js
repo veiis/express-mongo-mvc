@@ -6,12 +6,14 @@ const {
   permissionController,
   roleController,
   managerController,
+  userController,
 } = require("../controllers");
 const {
   authValidator,
   permissionValidator,
   roleValidator,
   managerValidator,
+  userValidator,
 } = require("../validators");
 const { managerAuth, hasAccess } = require("../middlewares/auth.middleware");
 const { ACCESS, RESOURCE } = require("../data");
@@ -124,6 +126,38 @@ router
     hasAccess(RESOURCE.MANAGERS, ACCESS.DELETE),
     validator(managerValidator.delete),
     managerController.delete
+  );
+
+// Users
+router
+  .route("/users")
+  .post(
+    hasAccess(RESOURCE.USERS, ACCESS.WRITE),
+    validator(userValidator.create),
+    userController.create
+  )
+  .put(
+    hasAccess(RESOURCE.MANAGERS, ACCESS.EDIT),
+    validator(userValidator.edit),
+    userController.edit
+  )
+  .get(
+    hasAccess(RESOURCE.MANAGERS, ACCESS.READ),
+    validator(userValidator.getAll),
+    userController.getAll
+  );
+
+router
+  .route("/users/:id")
+  .get(
+    hasAccess(RESOURCE.MANAGERS, ACCESS.READ),
+    validator(userValidator.getOne),
+    userController.getOne
+  )
+  .delete(
+    hasAccess(RESOURCE.MANAGERS, ACCESS.DELETE),
+    validator(userValidator.delete),
+    userController.delete
   );
 
 module.exports = router;
