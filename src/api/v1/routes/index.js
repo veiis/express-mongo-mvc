@@ -1,5 +1,4 @@
 const express = require("express");
-const { errorController } = require("../controllers");
 const router = express.Router();
 
 router.use("/user", require("./user.route"));

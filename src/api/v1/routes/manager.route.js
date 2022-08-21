@@ -24,7 +24,19 @@ router.post(
   authController.managerLogin
 );
 
+router.post(
+  "/refresh-token",
+  validator(authValidator.refreshToken),
+  authController.refreshToken
+);
+
 router.use(managerAuth);
+
+router.delete(
+  "/logout",
+  validator(authValidator.logout),
+  authController.logout
+);
 
 router.get(
   "/test-permission",

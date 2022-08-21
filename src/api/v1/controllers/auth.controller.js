@@ -93,7 +93,7 @@ exports.refreshToken = async (req, res, next) => {
     const userId = await jwt.verifyRefreshToken(refreshToken);
 
     const accessToken = await jwt.signAccessToken({ id: userId });
-    const newRefreshToken = await jwt.signAccessToken({ id: userId });
+    const newRefreshToken = await jwt.signRefreshToken({ id: userId });
 
     return generalResponse(
       res,
@@ -123,6 +123,62 @@ exports.me = async (req, res, next) => {
     const user = await User.findById(id).lean();
 
     return generalResponse(res, 201, { user }, messages.SUCCESS);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.resetPasswordUser = async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword, repeatNewPassword } = req.body;
+
+    if (newPassword !== repeatNewPassword)
+      throw createError.Conflict({
+        message: messages.PASSWORDS_DOES_NOT_MATCH,
+        newPassword,
+        repeatNewPassword,
+      });
+
+    const { id } = req.user;
+    const user = await User.findById(id, "password");
+
+    const isMatch = await user.isPasswordValid(oldPassword);
+    if (!isMatch) {
+      throw createError.Unauthorized(messages.INCORRECT_PASSWORD);
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return generalResponse(res, 200, {}, messages.UPDATE_SUCCESS);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.resetPasswordManager = async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword, repeatNewPassword } = req.body;
+
+    if (newPassword !== repeatNewPassword)
+      throw createError.Conflict({
+        message: messages.PASSWORDS_DOES_NOT_MATCH,
+        newPassword,
+        repeatNewPassword,
+      });
+
+    const { id } = req.user;
+    const manager = await Manager.findById(id, "password");
+
+    const isMatch = await manager.isPasswordValid(oldPassword);
+    if (!isMatch) {
+      throw createError.Unauthorized(messages.INCORRECT_PASSWORD);
+    }
+
+    manager.password = newPassword;
+    await manager.save();
+
+    return generalResponse(res, 200, {}, messages.UPDATE_SUCCESS);
   } catch (err) {
     next(err);
   }

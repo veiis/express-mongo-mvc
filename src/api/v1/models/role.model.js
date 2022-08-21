@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const { RL } = require("../data");
-
 const RoleSchema = new Schema(
   {
     name: {
@@ -15,8 +13,11 @@ const RoleSchema = new Schema(
     description: {
       type: String,
       trim: true,
+      default: null,
     },
-    permissions: [{ type: mongoose.Types.ObjectId, ref: "permission" }],
+    permissions: [
+      { type: mongoose.Types.ObjectId, ref: "permission", default: [] },
+    ],
     deletedAt: { type: Date, default: null },
   },
   { timestamps: true }

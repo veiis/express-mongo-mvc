@@ -1,4 +1,4 @@
-const { Permission, Manager } = require("../models");
+const { Permission, Manager, Role } = require("../models");
 const { RESOURCE, ACCESS } = require("./../data");
 const { logger, isDev } = require("../utils");
 
@@ -21,6 +21,11 @@ exports.run = async () => {
       result.push({ key: resources[i], values: `${accessKeys}` });
     }
 
+    // Creating Superadmin Role and Superadmin
+    let superadminRole = await Role.findOne({ name: "superadmin" }).lean();
+    if (!superadminRole)
+      superadminRole = await new Role({ name: "superadmin" }).save();
+
     let superadmin = await Manager.findOne({
       email: process.env.SUPERADMIN_EMAIL,
     });
@@ -29,10 +34,14 @@ exports.run = async () => {
       superadmin = await new Manager({
         email: process.env.SUPERADMIN_EMAIL,
         password: process.env.SUPERADMIN_PASSWORD,
+        role: superadminRole.id,
       }).save();
     }
 
-    result.push({ key: "superadmin", values: `${superadmin.email}` });
+    result.push(
+      { key: "superadmin role", values: `${superadminRole.name}` },
+      { key: "superadmin", values: `${superadmin.email}` }
+    );
 
     if (isDev) console.table(result);
     logger.info("✅ Seeding Succesfull.");
