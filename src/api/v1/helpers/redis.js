@@ -10,7 +10,7 @@ const client = redis.createClient({
 module.exports = {
   init: async () => {
     try {
-      logger.warn(" > Initializing Redis.");
+      console.log(" > Initializing Redis.");
       await client.connect();
 
       return client;
@@ -24,11 +24,11 @@ module.exports = {
 };
 
 client.on("connect", () => {
-  logger.info("✅ Redis Connected");
+  console.log("✅ Redis Connected");
 });
 
 client.on("ready", () => {
-  logger.info("⚡ Redis is Ready");
+  console.log("⚡ Redis is Ready");
 });
 
 client.on("error", () => {
@@ -36,7 +36,7 @@ client.on("error", () => {
 });
 
 client.on("end", () => {
-  logger.info("❌ Redis Disconnected");
+  console.log("❌ Redis Disconnected");
 });
 
 // Events on CTRL+C (exit)

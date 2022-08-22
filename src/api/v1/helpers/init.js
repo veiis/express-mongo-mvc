@@ -3,7 +3,6 @@ const helmet = require("helmet");
 const compression = require("compression");
 const swagger = require("swagger-ui-express");
 
-const { logger } = require("../utils");
 const { morgan } = require("./../middlewares");
 
 const connectToMongoDB = require("./mongodb");
@@ -14,7 +13,7 @@ const openapiDocs = require("./../../../openapi.json");
 const { errorController } = require("../controllers");
 
 module.exports = async (app) => {
-  logger.warn("♻ Initializing Requirements.");
+  console.log("♻ Initializing Requirements.");
   await connectToMongoDB();
   await connectToRedis();
 

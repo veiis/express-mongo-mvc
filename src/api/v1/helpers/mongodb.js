@@ -6,7 +6,7 @@ const { MONGO_SERVER, MONGO_DATABASE_NAME, MONGO_USER, MONGO_PASS } =
 
 module.exports = async () => {
   try {
-    logger.warn(" > Initializing MongoDB.");
+    console.log(" > Initializing MongoDB.");
     await mongoose.connect(`mongodb://${MONGO_SERVER}`, {
       dbName: MONGO_DATABASE_NAME,
       // user: MONGO_USER,
@@ -22,7 +22,7 @@ module.exports = async () => {
 };
 
 mongoose.connection.on("connected", () =>
-  logger.info("✅ Database (MongoDB) Connected.")
+  console.log("✅ Database (MongoDB) Connected.")
 );
 
 mongoose.connection.on("err", (err) =>
@@ -30,7 +30,7 @@ mongoose.connection.on("err", (err) =>
 );
 
 mongoose.connection.on("disconnected", () =>
-  logger.info("❌ MongoDB Disconnected")
+  console.log("❌ MongoDB Disconnected")
 );
 
 // Events on CTRL+C (exit)

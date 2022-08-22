@@ -4,7 +4,7 @@ const { logger, isDev } = require("../utils");
 
 exports.run = async () => {
   try {
-    logger.warn(" > Seeding Database...");
+    console.log(" > Seeding Database...");
     const resources = Object.values(RESOURCE);
     const accessKeys = Object.values(ACCESS);
 
@@ -40,11 +40,11 @@ exports.run = async () => {
 
     result.push(
       { key: "superadmin role", values: `${superadminRole.name}` },
-      { key: "superadmin", values: `${superadmin.email}` }
+      { key: "superadmin user", values: `${superadmin.email}` }
     );
 
     if (isDev) console.table(result);
-    logger.info("✅ Seeding Succesfull.");
+    console.log("✅ Seeding Succesfull.");
   } catch (error) {
     console.log(error);
     logger.error(`⛔ Failed to seed database, ${error.message}`);
