@@ -111,7 +111,7 @@ exports.logout = async (req, res, next) => {
     const { refreshToken } = req.body;
     const userId = await jwt.verifyRefreshToken(refreshToken);
     await redisClient.DEL(userId);
-    return generalResponse(res, 204, {}, messages.LOGIN_SUCCESS);
+    return generalResponse(res, 204);
   } catch (err) {
     next(err);
   }
