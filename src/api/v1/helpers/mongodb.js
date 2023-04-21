@@ -1,17 +1,22 @@
 const mongoose = require("mongoose");
 const { logger, isDev } = require("../utils");
 
-const { MONGO_SERVER, MONGO_DATABASE_NAME, MONGO_USER, MONGO_PASS } =
+const { MONGO_SERVER, MONGO_DATABASE_NAME, MONGO_USER, MONGO_PASS, MONGO_USE_AUTH } =
   process.env;
 
 module.exports = async () => {
   try {
     console.log(" > Initializing MongoDB.");
-    await mongoose.connect(`mongodb://${MONGO_SERVER}`, {
+    const options = {
       dbName: MONGO_DATABASE_NAME,
-      // user: MONGO_USER,
-      // pass: MONGO_PASS,
-    });
+    }
+
+    if (MONGO_USE_AUTH === "true" || MONGO_USE_AUTH === "1") {
+      options.user = MONGO_USER
+      options.pass = MONGO_PASS
+    }
+
+    await mongoose.connect(`mongodb://${MONGO_SERVER}`, options);
 
     // mongoose.set("debug", isDev());
   } catch (err) {
