@@ -61,7 +61,7 @@ const verify = (token) =>
       if (err) {
         // If there was an error on verifying token reject with 401
         const message =
-          err.name === "JsonWebTokenError" ? "Unauthorized" : err.message;
+          err.name === "TokenExpiredError" ? "Unauthorized" : err.message;
         return reject(createError.Unauthorized(message));
       }
       resolve(payload);

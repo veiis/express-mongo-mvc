@@ -150,7 +150,10 @@ exports.resetPasswordUser = async (req, res, next) => {
     user.password = newPassword;
     await user.save();
 
-    return generalResponse(res, 200, {}, messages.UPDATE_SUCCESS);
+    const accessToken = await jwt.signAccessToken({ id });
+    const newRefreshToken = await jwt.signRefreshToken({ id });
+
+    return generalResponse(res, 200, { accessToken, newRefreshToken }, messages.UPDATE_SUCCESS);
   } catch (err) {
     next(err);
   }

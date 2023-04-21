@@ -11,7 +11,7 @@ exports.signAccessToken = (user) => {
   return new Promise((resolve, reject) => {
     const payload = {};
     const options = {
-      expiresIn: isDev() ? "6d" : "1d", // Should be 1h or 15m
+      expiresIn: isDev() ? "1d" : "1m", // Should be too short like 1m
       issuer: "moveisbox.io",
       audience: user.id,
     };

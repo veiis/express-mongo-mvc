@@ -16,7 +16,7 @@ const startServer = async () => {
   await init(app);
   http
     .createServer(app)
-    .listen(PORT, () => console.log(`✅ Server is running on port ${PORT}`));
+    .listen(PORT, () => console.log(`✅ Server is running on http://localhost:${PORT}\n🐈 Swagger Documentation http://localhost:${PORT}/v1/docs`));
 };
 
 startServer();
