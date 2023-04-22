@@ -38,6 +38,14 @@ router.delete(
   authController.logout
 );
 
+router.get("/me", authController.getProfileManager);
+
+router.post(
+  "/reset-password",
+  validator(authValidator.resetPassword),
+  authController.resetPasswordManager
+);
+
 router.get(
   "/test-permission",
   hasAccess(RESOURCE.USERS, ACCESS.WRITE),

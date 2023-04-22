@@ -32,7 +32,7 @@ router.delete(
 );
 
 // Get Profile
-router.get("/me", authController.me);
+router.get("/me", authController.getProfileUser);
 
 // Reset Password
 router.post(

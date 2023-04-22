@@ -117,10 +117,21 @@ exports.logout = async (req, res, next) => {
   }
 };
 
-exports.me = async (req, res, next) => {
+exports.getProfileUser = async (req, res, next) => {
   try {
     const { id } = req.user;
     const user = await User.findById(id).lean();
+
+    return generalResponse(res, 201, { user }, messages.SUCCESS);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getProfileManager = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const user = await Manager.findById(id).populate("role").lean();
 
     return generalResponse(res, 201, { user }, messages.SUCCESS);
   } catch (err) {
